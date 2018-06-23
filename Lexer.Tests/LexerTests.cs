@@ -22,9 +22,8 @@ namespace Lexer.Tests
         {
             var lexer = new Lexer("Hello");
 
-            var success = lexer.Next();
+            lexer.Next();
 
-            Assert.IsTrue(success);
             Assert.AreEqual(1, lexer.Pos);
         }
 
@@ -33,16 +32,15 @@ namespace Lexer.Tests
         {
             var lexer = new Lexer("Hello");
 
-            var success = lexer.Next(2);
+            lexer.Next(2);
 
-            Assert.IsTrue(success);
             Assert.AreEqual(2, lexer.Pos);
         }
 
         [TestMethod]
-        public void Lexer_Next_ReturnsTrueWhenNotAtEof()
+        public void Lexer_Next_ReturnsTrueWhenSuccessfullyAdvancedPos()
         {
-            var lexer = new Lexer("Hello world");
+            var lexer = new Lexer("Hello");
 
             var result = lexer.Next();
 
@@ -50,13 +48,23 @@ namespace Lexer.Tests
         }
 
         [TestMethod]
-        public void Lexer_Next_ReturnsFalseWhenAtEof()
+        public void Lexer_Next_ReturnsFalseWhenFindsEof()
         {
-            var lexer = new Lexer("Hello", pos: 4);
+            var lexer = new Lexer();
 
             var result = lexer.Next();
 
             Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        public void Lexer_Next_SetsPosCorrectlyWhenFindsEof()
+        {
+            var lexer = new Lexer("Hello", pos: 5);
+
+            lexer.Next();
+
+            Assert.AreEqual(5, lexer.Pos);
         }
 
         [TestMethod]
@@ -97,6 +105,51 @@ namespace Lexer.Tests
             lexer.Emit(Lexeme.Text);
 
             Assert.AreEqual(5, lexer.Start);
+        }
+
+        [TestMethod]
+        public void Lexer_EmitError_EmitsErrorTokenCorrectly()
+        {
+            var lexer = new Lexer();
+
+            lexer.EmitError("Error");
+
+            var tokens = lexer.Tokens.ToArray();
+
+            Assert.AreEqual(1, tokens.Length);
+            Assert.AreEqual(Lexeme.Error, tokens[0].Type);
+            Assert.AreEqual("Error", tokens[0].Value);
+        }
+
+        [TestMethod]
+        public void Lexer_IgnoreWhitespace_ReturnsFalseOnEof()
+        {
+            var lexer = new Lexer();
+
+            var result = lexer.IgnoreWhitespace();
+
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        public void Lexer_IgnoreWhitespace_ReturnsFalseIfEofFollowsWhitespace()
+        {
+            var lexer = new Lexer("  ");
+
+            var result = lexer.IgnoreWhitespace();
+
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        public void Lexer_IgnoreWhitespace_AdvancesPosAndStartCorrectly()
+        {
+            var lexer = new Lexer("  hello");
+
+            lexer.IgnoreWhitespace();
+
+            Assert.AreEqual(2, lexer.Start);
+            Assert.AreEqual(2, lexer.Pos);
         }
     }
 }

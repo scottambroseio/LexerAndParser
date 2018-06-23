@@ -13,7 +13,7 @@ namespace Lexer
             tokens = new List<Token>();
         }
 
-        internal Lexer(string input = "", int start = 0, int pos = 0): this(input)
+        internal Lexer(string input = "", int start = 0, int pos = 0) : this(input)
         {
             Input = input;
             Start = start;
