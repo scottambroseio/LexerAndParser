@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2015
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lexer", "Lexer\Lexer.csproj", "{2DE1AC9E-2FF8-40DE-A7AB-D885488A4CB8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lexer", "Lexer\Lexer.csproj", "{2DE1AC9E-2FF8-40DE-A7AB-D885488A4CB8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Parser", "Parser\Parser.csproj", "{640A3730-1C72-40CB-82FF-35F3B496342C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csproj", "{C5FD24B9-5C9E-4923-A73A-4533A05FE5C9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Tests", "Common.Tests\Common.Tests.csproj", "{CD45E2A1-3932-4587-8A30-2461FAA84443}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +21,18 @@ Global
 		{2DE1AC9E-2FF8-40DE-A7AB-D885488A4CB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2DE1AC9E-2FF8-40DE-A7AB-D885488A4CB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2DE1AC9E-2FF8-40DE-A7AB-D885488A4CB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{640A3730-1C72-40CB-82FF-35F3B496342C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{640A3730-1C72-40CB-82FF-35F3B496342C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{640A3730-1C72-40CB-82FF-35F3B496342C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{640A3730-1C72-40CB-82FF-35F3B496342C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5FD24B9-5C9E-4923-A73A-4533A05FE5C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5FD24B9-5C9E-4923-A73A-4533A05FE5C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5FD24B9-5C9E-4923-A73A-4533A05FE5C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5FD24B9-5C9E-4923-A73A-4533A05FE5C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD45E2A1-3932-4587-8A30-2461FAA84443}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD45E2A1-3932-4587-8A30-2461FAA84443}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD45E2A1-3932-4587-8A30-2461FAA84443}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD45E2A1-3932-4587-8A30-2461FAA84443}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
