@@ -7,17 +7,24 @@ namespace Lexer.Tests
     [TestClass]
     public class LexerEndToEndTests
     {
+        private const string textTemplate = "Hello world";
+        private const string textActionTemplate = "Hello {{ name }}";
+        private const string textActionTextTemplate = "Hello {{ name }}!";
+        private const string actionTemplate = "{{ greeting }}";
+        private const string actionTextTemplate = "{{ greeting }}!";
+        private const string actionTextActionTemplate = "{{ firstName }} {{ lastName }}";
+        private const string actionNoWhitespaceTemplate = "{{greeting}}";
+        private const string actionLotsOfWhitespaceTemplate = "{{     greeting                           }}";
+
         [TestMethod]
-        public void AllTextTemplate()
+        public void TextTemplate()
         {
             var expected = new[]
             {
                 new Token(Lexeme.Text, "Hello world")
             };
 
-            var template = "Hello world";
-
-            var lexer = new Lexer(template);
+            var lexer = new Lexer(textTemplate);
 
             lexer.Run();
 
@@ -27,28 +34,7 @@ namespace Lexer.Tests
         }
 
         [TestMethod]
-        public void ActionNoTextTemplate()
-        {
-            var expected = new[]
-            {
-                new Token(Lexeme.LeftMeta, "{{"),
-                new Token(Lexeme.Identifier, "name"),
-                new Token(Lexeme.RightMeta, "}}")
-            };
-
-            var template = "{{ name }}";
-
-            var lexer = new Lexer(template);
-
-            lexer.Run();
-
-            var tokens = lexer.Tokens.ToArray();
-
-            CollectionAssert.AreEquivalent(expected, tokens);
-        }
-
-        [TestMethod]
-        public void TextWithActionTemplate()
+        public void TextActionTemplate()
         {
             var expected = new[]
             {
@@ -58,53 +44,7 @@ namespace Lexer.Tests
                 new Token(Lexeme.RightMeta, "}}")
             };
 
-            var template = "Hello {{ name }}";
-
-            var lexer = new Lexer(template);
-
-            lexer.Run();
-
-            var tokens = lexer.Tokens.ToArray();
-
-            CollectionAssert.AreEquivalent(expected, tokens);
-        }
-
-        [TestMethod]
-        public void TextWithActionNoActionWhitespaceTemplate()
-        {
-            var expected = new[]
-            {
-                new Token(Lexeme.Text, "Hello "),
-                new Token(Lexeme.LeftMeta, "{{"),
-                new Token(Lexeme.Identifier, "name"),
-                new Token(Lexeme.RightMeta, "}}")
-            };
-
-            var template = "Hello {{name}}";
-
-            var lexer = new Lexer(template);
-
-            lexer.Run();
-
-            var tokens = lexer.Tokens.ToArray();
-
-            CollectionAssert.AreEquivalent(expected, tokens);
-        }
-
-        [TestMethod]
-        public void TextWithActionLotsOfActionWhitespaceTemplate()
-        {
-            var expected = new[]
-            {
-                new Token(Lexeme.Text, "Hello "),
-                new Token(Lexeme.LeftMeta, "{{"),
-                new Token(Lexeme.Identifier, "name"),
-                new Token(Lexeme.RightMeta, "}}")
-            };
-
-            var template = "Hello {{                        name      }}";
-
-            var lexer = new Lexer(template);
+            var lexer = new Lexer(textActionTemplate);
 
             lexer.Run();
 
@@ -125,9 +65,7 @@ namespace Lexer.Tests
                 new Token(Lexeme.Text, "!")
             };
 
-            var template = "Hello {{ name }}!";
-
-            var lexer = new Lexer(template);
+            var lexer = new Lexer(textActionTextTemplate);
 
             lexer.Run();
 
@@ -137,18 +75,16 @@ namespace Lexer.Tests
         }
 
         [TestMethod]
-        public void MissingIdentifierTemplate()
+        public void ActionTemplate()
         {
             var expected = new[]
             {
-                new Token(Lexeme.Text, "Hello "),
                 new Token(Lexeme.LeftMeta, "{{"),
-                new Token(Lexeme.Error, "Expected a valid Identifier")
+                new Token(Lexeme.Identifier, "greeting"),
+                new Token(Lexeme.RightMeta, "}}")
             };
 
-            var template = "Hello {{}}!";
-
-            var lexer = new Lexer(template);
+            var lexer = new Lexer(actionTemplate);
 
             lexer.Run();
 
@@ -158,18 +94,78 @@ namespace Lexer.Tests
         }
 
         [TestMethod]
-        public void UnexpectedEof()
+        public void ActionText()
         {
             var expected = new[]
             {
-                new Token(Lexeme.Text, "Hello "),
                 new Token(Lexeme.LeftMeta, "{{"),
-                new Token(Lexeme.Error, "Unexpected Eof")
+                new Token(Lexeme.Identifier, "greeting"),
+                new Token(Lexeme.RightMeta, "}}"),
+                new Token(Lexeme.Text, "!")
             };
 
-            var template = "Hello {{ ";
+            var lexer = new Lexer(actionTextTemplate);
 
-            var lexer = new Lexer(template);
+            lexer.Run();
+
+            var tokens = lexer.Tokens.ToArray();
+
+            CollectionAssert.AreEquivalent(expected, tokens);
+        }
+
+        [TestMethod]
+        public void ActionTextAction()
+        {
+            var expected = new[]
+            {
+                new Token(Lexeme.LeftMeta, "{{"),
+                new Token(Lexeme.Identifier, "firstName"),
+                new Token(Lexeme.RightMeta, "}}"),
+                new Token(Lexeme.Text, " "),
+                new Token(Lexeme.LeftMeta, "{{"),
+                new Token(Lexeme.Identifier, "lastName"),
+                new Token(Lexeme.RightMeta, "}}")
+            };
+
+            var lexer = new Lexer(actionTextActionTemplate);
+
+            lexer.Run();
+
+            var tokens = lexer.Tokens.ToArray();
+
+            CollectionAssert.AreEquivalent(expected, tokens);
+        }
+
+        [TestMethod]
+        public void ActionNoWhitespace()
+        {
+            var expected = new[]
+            {
+                new Token(Lexeme.LeftMeta, "{{"),
+                new Token(Lexeme.Identifier, "greeting"),
+                new Token(Lexeme.RightMeta, "}}")
+            };
+
+            var lexer = new Lexer(actionNoWhitespaceTemplate);
+
+            lexer.Run();
+
+            var tokens = lexer.Tokens.ToArray();
+
+            CollectionAssert.AreEquivalent(expected, tokens);
+        }
+
+        [TestMethod]
+        public void ActionLotsOfWhitespaceTemplate()
+        {
+            var expected = new[]
+            {
+                new Token(Lexeme.LeftMeta, "{{"),
+                new Token(Lexeme.Identifier, "greeting"),
+                new Token(Lexeme.RightMeta, "}}")
+            };
+
+            var lexer = new Lexer(actionLotsOfWhitespaceTemplate);
 
             lexer.Run();
 
