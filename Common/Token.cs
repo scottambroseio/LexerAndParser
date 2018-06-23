@@ -1,6 +1,6 @@
 ﻿namespace Common
 {
-    public class Token
+    public struct Token
     {
         public Token(Lexeme type, string value)
         {

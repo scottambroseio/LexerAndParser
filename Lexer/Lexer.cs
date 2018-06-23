@@ -33,12 +33,40 @@ namespace Lexer
         {
             Pos += toIncrease;
 
-            return Pos < Input.Length;
+            if (Pos < Input.Length)
+            {
+                return true;
+            }
+
+            Pos = Input.Length;
+            return false;
         }
 
         public bool TokenExists()
         {
             return Pos > Start;
+        }
+
+        public bool IgnoreWhitespace()
+        {
+            if (Pos >= Input.Length)
+            {
+                return false;
+            }
+
+            do
+            {
+                if (Input[Pos] == ' ')
+                {
+                    continue;
+                }
+
+                SetStartToPos();
+                return true;
+            } while (Next());
+
+            // unexpected eof
+            return false;
         }
 
         public void Emit(Lexeme type)
@@ -48,6 +76,11 @@ namespace Lexer
             tokens.Add(new Token(type, value));
 
             SetStartToPos();
+        }
+
+        public void EmitError(string value)
+        {
+            tokens.Add(new Token(Lexeme.Error, value));
         }
 
         public void Run()

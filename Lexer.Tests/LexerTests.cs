@@ -20,20 +20,22 @@ namespace Lexer.Tests
         [TestMethod]
         public void Lexer_Next_IncrementsPosByOneByDefault()
         {
-            var lexer = new Lexer();
+            var lexer = new Lexer("Hello");
 
-            lexer.Next();
+            var success = lexer.Next();
 
+            Assert.IsTrue(success);
             Assert.AreEqual(1, lexer.Pos);
         }
 
         [TestMethod]
         public void Lexer_Next_IncrementsPosBySuppliedAmount()
         {
-            var lexer = new Lexer();
+            var lexer = new Lexer("Hello");
 
-            lexer.Next(2);
+            var success = lexer.Next(2);
 
+            Assert.IsTrue(success);
             Assert.AreEqual(2, lexer.Pos);
         }
 
