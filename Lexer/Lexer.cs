@@ -13,6 +13,13 @@ namespace Lexer
             tokens = new List<Token>();
         }
 
+        internal Lexer(string input = "", int start = 0, int pos = 0): this(input)
+        {
+            Input = input;
+            Start = start;
+            Pos = pos;
+        }
+
         public string Input { get; }
         public int Start { get; private set; }
         public int Pos { get; private set; }
@@ -22,19 +29,9 @@ namespace Lexer
             get { return tokens; }
         }
 
-        private void IncrementPos(int toIncrease = 1)
+        public bool Next(int toIncrease = 1)
         {
             Pos += toIncrease;
-        }
-
-        private void SetStartToPos()
-        {
-            Start = Pos;
-        }
-
-        public bool Next()
-        {
-            IncrementPos();
 
             return Pos < Input.Length;
         }
@@ -61,6 +58,11 @@ namespace Lexer
             {
                 function = function(this);
             }
+        }
+
+        private void SetStartToPos()
+        {
+            Start = Pos;
         }
     }
 }

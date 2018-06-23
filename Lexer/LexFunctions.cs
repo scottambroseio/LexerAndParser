@@ -37,6 +37,15 @@ namespace Lexer
 
         public static LexFunction LexLeftMeta(Lexer lexer)
         {
+            // We don't need to validate we've found a left meta / check eof as we've already done that check
+            // Just advance pos by two (length of left meta), emit and continue
+            lexer.Next(2);
+            lexer.Emit(Lexeme.LeftMeta);
+            return LexInsideAction;
+        }
+
+        public static LexFunction LexInsideAction(Lexer lexer)
+        {
             return null;
         }
     }
