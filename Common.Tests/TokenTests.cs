@@ -17,10 +17,9 @@ namespace Common.Tests
         [TestMethod]
         public void Token_ToString()
         {
-            var expected = @"Type: ""Text"" Value: ""Hello world""";
             var token = new Token(Lexeme.Text, "Hello world");
 
-            Assert.AreEqual(expected, token.ToString());
+            Assert.AreEqual(@"Type: ""Text"" Value: ""Hello world""", token.ToString());
         }
     }
 }
